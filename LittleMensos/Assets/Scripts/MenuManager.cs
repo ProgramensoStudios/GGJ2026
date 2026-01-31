@@ -1,22 +1,24 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
     public float delay;
     [SerializeField] private DinamicAudio da;
+    [SerializeField] private Canvas menu;
+    [SerializeField] private StartFirstCutScene cutsceneStart;
 
     public void ChangeScene(int Scene)
     {
         da.AddLayerSound(1);
         da.LessLayerSound(0);
-        StartCoroutine(DelayToChange(Scene));
+        StartCoroutine(DelayToChange());
     }
 
-    IEnumerator DelayToChange(int scene)
+    IEnumerator DelayToChange()
     {
         yield return new WaitForSeconds(delay);
-        SceneManager.LoadScene(scene);
+        menu.enabled = false;
+        cutsceneStart.StartGame();
     }
 }

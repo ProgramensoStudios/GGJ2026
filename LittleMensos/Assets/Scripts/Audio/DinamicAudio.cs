@@ -3,11 +3,25 @@ using UnityEngine;
 
 public class DinamicAudio : MonoBehaviour
 {
+
+    public static DinamicAudio Instance { get; private set; }
     [SerializeField] private AudioSource[] audioLayers;
     private float timeChange = 0.75f;
 
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
-    void Start()
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+
+        void Start()
     {
         for (int index = 0; index < audioLayers.Length; index++)
         {
