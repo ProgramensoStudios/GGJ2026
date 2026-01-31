@@ -1,6 +1,8 @@
+using System.Collections;
+using Unity.Hierarchy;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -66,12 +68,13 @@ public class PlayerMovement : MonoBehaviour
     private bool isSprinting;
     private bool isDashing;
 
+    public System.Action<bool> OnMaskStateChanged;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         originalScale = transform.localScale;
         currentStamina = maxStamina;
-
     }
 
     void FixedUpdate()
@@ -335,7 +338,9 @@ public class PlayerMovement : MonoBehaviour
             mask.GetComponent<Collider>().enabled = true;
             mask = null;
             maskOn = false;
-        } 
+        }
+
+        OnMaskStateChanged?.Invoke(maskOn);
     }
 
 
