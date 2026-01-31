@@ -90,13 +90,13 @@ public class PlayerMovement : MonoBehaviour
 
     void ApplyBetterJump()
     {
-        if (rb.velocity.y < 0)
+        if (rb.linearVelocity.y < 0)
         {
-            rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.fixedDeltaTime;
+            rb.linearVelocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.fixedDeltaTime;
         }
-        else if (rb.velocity.y > 0 && !jumpHeld)
+        else if (rb.linearVelocity.y > 0 && !jumpHeld)
         {
-            rb.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.fixedDeltaTime;
+            rb.linearVelocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.fixedDeltaTime;
         }
     }
 
@@ -160,7 +160,7 @@ public class PlayerMovement : MonoBehaviour
         currentVelocity = Vector3.zero;
         rb.linearVelocity = Vector3.zero;
 
-        yield return new WaitForSeconds(dashPause); // micro anticipación
+        yield return new WaitForSeconds(dashPause); // micro anticipaciï¿½n
 
         Vector3 dashDir = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
         rb.AddForce(dashDir * dashForce, ForceMode.Impulse);
