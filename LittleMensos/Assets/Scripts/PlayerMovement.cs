@@ -32,6 +32,29 @@ public class PlayerMovement : MonoBehaviour
     public float crouchScaleY = 0.6f;
     public bool isCrouched;
 
+    [Header("Stamina")]
+    public float maxStamina = 5f;
+    public float staminaDrain = 1.2f;     // por segundo corriendo
+    public float staminaRecovery = 0.8f;  // por segundo caminando
+    public float staminaCooldown = 10f;  // delay antes de recuperar
+    public float recoverThreshold = 0.6f; // 60% para dejar de estar cansado
+
+    private float currentStamina;
+    private float staminaTimer;
+    private bool isTired;
+
+    [Header("Interaction")]
+    public float interactRange = 2f; // distancia del raycast
+    public Transform faceTransform;  // asigna el transform de la "carita" del player
+
+    [Header("Rotation")]
+    public float rotationSpeed = 10f; // cuán rápido gira hacia la dirección de movimiento
+
+    [Header("Game Settings")]
+    [SerializeField] private bool maskOn;
+    [SerializeField] private GameObject mask;
+
+
     [Header("Game Limits Z")]
     public float minZ = -3f;
     public float maxZ = 3f;
@@ -47,11 +70,15 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         originalScale = transform.localScale;
+        currentStamina = maxStamina;
+
     }
 
     void FixedUpdate()
     {
+        HandleStamina();
         ApplyMovement();
+        RotateTowardsMovement();
         ApplyBetterJump();
     }
 
@@ -59,11 +86,12 @@ public class PlayerMovement : MonoBehaviour
 
     void ApplyMovement()
     {
-        if (isDashing) return;
+        if (isDashing) return; 
 
         Vector3 inputDir = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
 
-        float targetSpeed = isSprinting ? sprintSpeed : walkSpeed;
+        float staminaFactor = isTired ? 0.85f : 1f;
+        float targetSpeed = (isSprinting ? sprintSpeed : walkSpeed) * staminaFactor;
 
         if (isCrouched)
             targetSpeed *= crouchSpeedMultiplier;
@@ -90,13 +118,13 @@ public class PlayerMovement : MonoBehaviour
 
     void ApplyBetterJump()
     {
-        if (rb.velocity.y < 0)
+        if (rb.linearVelocity.y < 0)
         {
-            rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.fixedDeltaTime;
+            rb.linearVelocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.fixedDeltaTime;
         }
-        else if (rb.velocity.y > 0 && !jumpHeld)
+        else if (rb.linearVelocity.y > 0 && !jumpHeld)
         {
-            rb.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.fixedDeltaTime;
+            rb.linearVelocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.fixedDeltaTime;
         }
     }
 
@@ -109,7 +137,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnSprint(InputAction.CallbackContext context)
     {
-        if (isCrouched) return;
+        if (isCrouched || isTired) return;
         isSprinting = context.ReadValueAsButton();
     }
 
@@ -128,13 +156,13 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnDash(InputAction.CallbackContext context)
     {
-        if (context.performed && !isDashing)
-            StartCoroutine(Dash());
+        if (context.performed && !isDashing && !isTired && maskOn)
+        StartCoroutine(Dash());
     }
 
     public void OnCrouch(InputAction.CallbackContext context)
     {
-        if (context.performed && isGrounded)
+        if (context.started && isGrounded)
         {
             isCrouched = true;
             isSprinting = false;
@@ -151,24 +179,165 @@ public class PlayerMovement : MonoBehaviour
             transform.localScale = originalScale;
         }
     }
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            Interact();
+        }
+    }
+
+    public void OnMask(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            OnMaskOnOff();
+        }
+    }
+
 
     // ===== DASH =====
 
     IEnumerator Dash()
     {
         isDashing = true;
+
+        // corta TODO
         currentVelocity = Vector3.zero;
         rb.linearVelocity = Vector3.zero;
 
-        yield return new WaitForSeconds(dashPause); // micro anticipación
+        yield return new WaitForSeconds(dashPause); // anticipación tipo Inside
 
         Vector3 dashDir = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
+
+        // si no hay input, dash hacia adelante
+        if (dashDir == Vector3.zero)
+            dashDir = transform.right;
+
         rb.AddForce(dashDir * dashForce, ForceMode.Impulse);
 
         yield return new WaitForSeconds(dashDuration);
 
+        // mata el exceso de velocidad
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x * 0.3f, rb.linearVelocity.y, rb.linearVelocity.z * 0.3f);
+
         isDashing = false;
     }
+
+    void RotateTowardsMovement()
+    {
+        // Si no hay input, no giramos
+        Vector3 inputDir = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
+        if (inputDir.sqrMagnitude < 0.01f) return;
+
+        // Calculamos la rotación deseada
+        Quaternion targetRotation = Quaternion.LookRotation(inputDir, Vector3.up);
+
+        // Rotación suave
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            targetRotation,
+            rotationSpeed * Time.fixedDeltaTime
+        );
+    }
+
+
+
+    void HandleStamina()
+    {
+        // Drenar stamina SOLO si puede sprintar
+        if (isSprinting && !isCrouched && !isDashing && !isTired && moveInput.magnitude > 0)
+        {
+            currentStamina -= staminaDrain * Time.fixedDeltaTime;
+
+            if (currentStamina <= 0)
+            {
+                currentStamina = 0;
+                isTired = true;
+                isSprinting = false;
+                staminaTimer = staminaCooldown;
+                Debug.Log("<color=red> Toy cansado jfe </color>");
+            }
+        }
+        else
+        {
+            staminaTimer -= Time.fixedDeltaTime;
+
+            if (staminaTimer <= 0 && currentStamina < maxStamina)
+            {
+                currentStamina += staminaRecovery * Time.fixedDeltaTime;
+                currentStamina = Mathf.Min(currentStamina, maxStamina);
+            }
+        }
+
+        // SOLO aquí se recupera del cansancio
+        if (isTired && currentStamina >= maxStamina * recoverThreshold)
+        {
+            isTired = false;
+            Debug.Log("<color=blue> Toy recuperado</color>");
+        }
+    }
+
+    public void OnMaskOnOff()
+    {
+        if (faceTransform == null) return;
+        RaycastHit hit;
+        Vector3 origin = faceTransform.position;
+        Vector3 direction = faceTransform.forward;
+
+        if (maskOn)
+        {
+            AddRemoveMask(mask);
+        }
+
+        if (Physics.Raycast(origin, direction, out hit, interactRange))
+        {
+            if (hit.collider.CompareTag("Mask"))
+            {
+                Debug.Log("<color=green>Estoy tocando un objeto interactuable: " + hit.collider.name + "</color>");
+                AddRemoveMask(hit.collider.gameObject);
+            }
+        }
+    }
+
+    public void Interact()
+    {
+        if (faceTransform == null) return;
+        RaycastHit hit;
+        Vector3 origin = faceTransform.position;
+        Vector3 direction = faceTransform.forward;
+
+        if (Physics.Raycast(origin, direction, out hit, interactRange))
+        {
+            if (hit.collider.CompareTag("Interactable"))
+            {
+                Debug.Log("<color=green>Estoy tocando un objeto interactuable: " + hit.collider.name + "</color>");
+            }
+        }
+    }
+
+    void AddRemoveMask(GameObject maskCurrent)
+    {
+        Debug.Log("mask");
+        if (!maskOn)
+        {
+            Debug.Log("puesta");
+            mask = maskCurrent;
+            maskCurrent.transform.parent = faceTransform;
+            maskCurrent.transform.position = faceTransform.position;
+            mask.GetComponent<Collider>().enabled = false;
+            maskOn = true;
+        }
+        else
+        {
+            Debug.Log("quitada");
+            maskCurrent.transform.parent = null;
+            mask.GetComponent<Collider>().enabled = true;
+            mask = null;
+            maskOn = false;
+        } 
+    }
+
 
     // ===== GROUND CHECK =====
 
@@ -177,4 +346,21 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
             isGrounded = true;
     }
+
+    void OnDrawGizmosSelected()
+    {
+        if (faceTransform == null) return;
+
+        Gizmos.color = Color.yellow;
+
+        Vector3 origin = faceTransform.position;
+        Vector3 direction = faceTransform.forward;
+
+        // Dibuja una línea desde la cara hacia adelante
+        Gizmos.DrawLine(origin, origin + direction * interactRange);
+
+        // Dibuja un pequeño punto al final del raycast
+        Gizmos.DrawSphere(origin + direction * interactRange, 0.05f);
+    }
+
 }
