@@ -1,16 +1,55 @@
+using System.Collections;
 using UnityEngine;
 
 public class DinamicAudio : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private AudioSource[] audioLayers;
+    private float timeChange = 1.5f;
+
+    public int targetPruv;
+
     void Start()
     {
-        
+        for (int index = 0; index < audioLayers.Length; index++)
+        {
+            AudioSource layer = audioLayers[index];
+            layer.volume = 0f;
+            layer.Play();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    [ContextMenu("addLayersound")]
+    private void ppA()
     {
-        
+        AddLayerSound(targetPruv);
+    }
+    [ContextMenu("lessLayersound")]
+    private void ppl()
+    {
+        LessLayerSound(targetPruv);
+    }
+
+    private void AddLayerSound(int targetAudio)
+    {
+        StartCoroutine(Fade(targetAudio, 1, timeChange));
+    }
+    private void LessLayerSound(int targetAudio)
+    {
+        StartCoroutine(Fade(targetAudio, 0, timeChange));
+    }
+
+    private IEnumerator Fade(int layerAudio, float target, float time)
+    {
+        float start = audioLayers[layerAudio].volume;
+        float t = 0f;
+
+        while (t < time)
+        {
+            t += Time.deltaTime;
+            audioLayers[layerAudio].volume = Mathf.Lerp(start, target, t / time);
+            yield return null;
+        }
+
+        audioLayers[layerAudio].volume = target;
     }
 }
