@@ -1507,6 +1507,16 @@ MonoBehaviour:
   dashPause: 0.05
   crouchScaleY: 0.5
   isCrouched: 0
+  maxStamina: 5
+  staminaDrain: 1.2
+  staminaRecovery: 0.8
+  staminaCooldown: 10
+  recoverThreshold: 0.6
+  interactRange: 2
+  faceTransform: {fileID: 0}
+  rotationSpeed: 10
+  maskOn: 0
+  mask: {fileID: 0}
   minZ: -25
   maxZ: 1
 --- !u!54 &1269798210
@@ -1625,7 +1635,7 @@ Transform:
   m_GameObject: {fileID: 1269798207}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.0342, y: 0.5, z: -11.54}
+  m_LocalPosition: {x: -1.0342, y: 1, z: -11.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2561,7 +2571,7 @@ Transform:
   m_GameObject: {fileID: 1912928008}
   serializedVersion: 2
   m_LocalRotation: {x: 0.23899561, y: -0.00000001150173, z: 0.0000000028309004, w: 0.97102064}
-  m_LocalPosition: {x: -1.0342, y: 5.74, z: -21.54}
+  m_LocalPosition: {x: -1.0342, y: 6.24, z: -21.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

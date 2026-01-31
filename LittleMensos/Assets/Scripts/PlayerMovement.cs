@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public float walkSpeed = 4.5f;
     public float sprintSpeed = 7f;
     public float crouchSpeedMultiplier = 0.5f;
+    public bool canMove;
 
     public float acceleration = 18f;
     public float deceleration = 22f;
@@ -78,6 +79,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!canMove) return;
         HandleStamina();
         ApplyMovement();
         RotateTowardsMovement();
