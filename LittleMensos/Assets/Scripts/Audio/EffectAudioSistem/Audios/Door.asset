@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Door
   m_EditorClassIdentifier: Assembly-CSharp::SFXData
   id: Door
-  clip: {fileID: 8300000, guid: 5dce4e3a1cdb3b84c91e33525404ea75, type: 3}
+  clip: {fileID: 0}
   volume: 1
   pitch: 1
   loop: 0
