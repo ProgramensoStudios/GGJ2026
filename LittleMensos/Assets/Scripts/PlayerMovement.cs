@@ -1,6 +1,10 @@
+using System.Collections;
+using Unity.Hierarchy;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -54,6 +58,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool maskOn;
     [SerializeField] private GameObject mask;
 
+    [Header("Post Process")]
+    [SerializeField] private Volume volume;
+    private Vignette vignette;
+
 
     [Header("Game Limits Z")]
     public float minZ = -3f;
@@ -71,7 +79,10 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         originalScale = transform.localScale;
         currentStamina = maxStamina;
-
+        if (volume != null && volume.profile.TryGet(out vignette))
+        {
+            vignette.active = true; // start disabled
+        }
     }
 
     void FixedUpdate()
@@ -335,7 +346,15 @@ public class PlayerMovement : MonoBehaviour
             mask.GetComponent<Collider>().enabled = true;
             mask = null;
             maskOn = false;
-        } 
+        }
+        PostProcessChange();
+    }
+
+    //VIGNETTE
+    void PostProcessChange()
+    {
+        if (vignette == null) return;
+        vignette.active =! maskOn;
     }
 
 
