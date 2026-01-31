@@ -10,10 +10,10 @@ public class PlayerMovement : MonoBehaviour
     public float walkSpeed = 4.5f;
     public float sprintSpeed = 7f;
     public float crouchSpeedMultiplier = 0.5f;
+    public bool canMove;
 
     public float acceleration = 18f;
     public float deceleration = 22f;
-
     private Vector3 currentVelocity;
 
     [Header("Jump")]
@@ -79,6 +79,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!canMove) return;
         HandleStamina();
         ApplyMovement();
         RotateTowardsMovement();
@@ -95,6 +96,11 @@ public class PlayerMovement : MonoBehaviour
 
         float staminaFactor = isTired ? 0.85f : 1f;
         float targetSpeed = (isSprinting ? sprintSpeed : walkSpeed) * staminaFactor;
+
+        if (maskOn)
+        {
+            targetSpeed *= 1.5f; 
+        }
 
         if (isCrouched)
             targetSpeed *= crouchSpeedMultiplier;
@@ -209,7 +215,7 @@ public class PlayerMovement : MonoBehaviour
         currentVelocity = Vector3.zero;
         rb.linearVelocity = Vector3.zero;
 
-        yield return new WaitForSeconds(dashPause); // anticipaci�n tipo Inside
+        yield return new WaitForSeconds(dashPause); 
 
         Vector3 dashDir = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
 
