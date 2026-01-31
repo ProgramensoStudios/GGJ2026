@@ -14,6 +14,8 @@ public class PostProcessChange : MonoBehaviour
     public float vignetteOffIntensity = 0.2f;
     public float fadeDuration = 0.5f;
 
+    public bool firstTime = true;
+
     private Vignette vignette;
     private Coroutine fadeRoutine;
 
@@ -22,6 +24,7 @@ public class PostProcessChange : MonoBehaviour
         if (volume.profile.TryGet(out vignette))
         {
             vignette.active = true;
+            if (firstTime) return;
             vignette.intensity.value = vignetteOnIntensity;
         }
         else
