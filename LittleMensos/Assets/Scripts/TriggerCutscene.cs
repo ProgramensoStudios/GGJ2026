@@ -1,12 +1,15 @@
 using UnityEngine;
 using System.Collections;
 using Unity.Cinemachine;
+using System;
 
 public class TriggerCutscene : MonoBehaviour
 {
     public GameObject cutscene;
     public float timeToEnd;
     private bool hasPlayed = false;
+
+    public Action startGame;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -20,5 +23,6 @@ public class TriggerCutscene : MonoBehaviour
     {
         yield return new WaitForSeconds(timeToEnd);
         cutscene.gameObject.SetActive(false);
+        startGame?.Invoke();
     }
 }
