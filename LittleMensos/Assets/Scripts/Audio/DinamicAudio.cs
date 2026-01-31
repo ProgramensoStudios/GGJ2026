@@ -18,17 +18,6 @@ public class DinamicAudio : MonoBehaviour
         }
     }
 
-    [ContextMenu("addLayersound")]
-    private void ppA()
-    {
-        AddLayerSound(targetPruv);
-    }
-    [ContextMenu("lessLayersound")]
-    private void ppl()
-    {
-        LessLayerSound(targetPruv);
-    }
-
     private void AddLayerSound(int targetAudio)
     {
         StartCoroutine(Fade(targetAudio, 1, timeChange));
