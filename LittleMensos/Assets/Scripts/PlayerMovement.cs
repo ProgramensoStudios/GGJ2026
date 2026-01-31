@@ -13,7 +13,6 @@ public class PlayerMovement : MonoBehaviour
 
     public float acceleration = 18f;
     public float deceleration = 22f;
-
     private Vector3 currentVelocity;
 
     [Header("Jump")]
@@ -95,6 +94,11 @@ public class PlayerMovement : MonoBehaviour
 
         float staminaFactor = isTired ? 0.85f : 1f;
         float targetSpeed = (isSprinting ? sprintSpeed : walkSpeed) * staminaFactor;
+
+        if (maskOn)
+        {
+            targetSpeed *= 1.5f; 
+        }
 
         if (isCrouched)
             targetSpeed *= crouchSpeedMultiplier;

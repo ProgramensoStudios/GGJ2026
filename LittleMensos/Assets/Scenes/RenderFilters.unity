@@ -1533,7 +1533,8 @@ MonoBehaviour:
   player: {fileID: 721465033}
   volume: {fileID: 1962582829}
   vignetteOnIntensity: 0.4
-  fadeDuration: 0.5
+  vignetteOffIntensity: 0.23
+  fadeDuration: 0.3
 --- !u!1 &2006625785
 GameObject:
   m_ObjectHideFlags: 0
