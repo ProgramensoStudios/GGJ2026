@@ -4,9 +4,8 @@ using UnityEngine;
 public class DinamicAudio : MonoBehaviour
 {
     [SerializeField] private AudioSource[] audioLayers;
-    private float timeChange = 1.5f;
+    private float timeChange = 0.75f;
 
-    public int targetPruv;
 
     void Start()
     {
@@ -16,13 +15,14 @@ public class DinamicAudio : MonoBehaviour
             layer.volume = 0f;
             layer.Play();
         }
+        AddLayerSound(0);
     }
 
-    private void AddLayerSound(int targetAudio)
+    public void AddLayerSound(int targetAudio)
     {
         StartCoroutine(Fade(targetAudio, 1, timeChange));
     }
-    private void LessLayerSound(int targetAudio)
+    public void LessLayerSound(int targetAudio)
     {
         StartCoroutine(Fade(targetAudio, 0, timeChange));
     }
