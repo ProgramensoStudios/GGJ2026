@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public float walkSpeed = 4.5f;
     public float sprintSpeed = 7f;
     public float crouchSpeedMultiplier = 0.5f;
+    public float maskSpeedMultiplier = 1.5f;
 
     public float acceleration = 18f;
     public float deceleration = 22f;
@@ -97,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (maskOn)
         {
-            targetSpeed *= 1.5f; 
+            targetSpeed *= maskSpeedMultiplier; 
         }
 
         if (isCrouched)
