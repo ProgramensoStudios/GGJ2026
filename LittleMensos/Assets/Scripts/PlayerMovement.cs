@@ -49,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
     public Transform faceTransform;  // asigna el transform de la "carita" del player
 
     [Header("Rotation")]
-    public float rotationSpeed = 10f; // cuán rápido gira hacia la dirección de movimiento
+    public float rotationSpeed = 10f; // cuï¿½n rï¿½pido gira hacia la direcciï¿½n de movimiento
 
     [Header("Game Settings")]
     [SerializeField] private bool maskOn;
@@ -213,7 +213,7 @@ public class PlayerMovement : MonoBehaviour
         currentVelocity = Vector3.zero;
         rb.linearVelocity = Vector3.zero;
 
-        yield return new WaitForSeconds(dashPause); // anticipación tipo Inside
+        yield return new WaitForSeconds(dashPause); 
 
         Vector3 dashDir = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
 
@@ -237,10 +237,10 @@ public class PlayerMovement : MonoBehaviour
         Vector3 inputDir = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
         if (inputDir.sqrMagnitude < 0.01f) return;
 
-        // Calculamos la rotación deseada
+        // Calculamos la rotaciï¿½n deseada
         Quaternion targetRotation = Quaternion.LookRotation(inputDir, Vector3.up);
 
-        // Rotación suave
+        // Rotaciï¿½n suave
         transform.rotation = Quaternion.Slerp(
             transform.rotation,
             targetRotation,
@@ -277,7 +277,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        // SOLO aquí se recupera del cansancio
+        // SOLO aquï¿½ se recupera del cansancio
         if (isTired && currentStamina >= maxStamina * recoverThreshold)
         {
             isTired = false;
@@ -365,10 +365,10 @@ public class PlayerMovement : MonoBehaviour
         Vector3 origin = faceTransform.position;
         Vector3 direction = faceTransform.forward;
 
-        // Dibuja una línea desde la cara hacia adelante
+        // Dibuja una lï¿½nea desde la cara hacia adelante
         Gizmos.DrawLine(origin, origin + direction * interactRange);
 
-        // Dibuja un pequeño punto al final del raycast
+        // Dibuja un pequeï¿½o punto al final del raycast
         Gizmos.DrawSphere(origin + direction * interactRange, 0.05f);
     }
 
