@@ -545,7 +545,6 @@ MonoBehaviour:
   rotationSpeed: 3
   maskOn: 0
   mask: {fileID: 0}
-  volume: {fileID: 1962582829}
   minZ: -25
   maxZ: 1
 --- !u!54 &721465034
@@ -1344,6 +1343,7 @@ GameObject:
   - component: {fileID: 1962582828}
   - component: {fileID: 1962582827}
   - component: {fileID: 1962582829}
+  - component: {fileID: 1962582830}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1518,6 +1518,22 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 86f3144e66519a043b58729029197685, type: 2}
+--- !u!114 &1962582830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1962582823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3df8430a4b766b43a8263a601633c71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PostProcessChange
+  player: {fileID: 721465033}
+  volume: {fileID: 1962582829}
+  vignetteOnIntensity: 0.4
+  fadeDuration: 0.5
 --- !u!1 &2006625785
 GameObject:
   m_ObjectHideFlags: 0
