@@ -9,6 +9,7 @@ public class GarraPatrol : MonoBehaviour,IPatrolBehaviour
     SpriteRenderer sprite;
     private void Start()
     {
+        player = GameObject.FindFirstObjectByType<PlayerMovement>().gameObject.transform;
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
     }

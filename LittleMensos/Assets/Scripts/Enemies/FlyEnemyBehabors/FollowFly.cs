@@ -10,6 +10,7 @@ public class FollowFly : MonoBehaviour, IFollowBehaviour
 
     private void Start()
     {
+        player = GameObject.FindFirstObjectByType<PlayerMovement>().gameObject.transform;
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
     }
