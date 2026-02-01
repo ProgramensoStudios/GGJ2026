@@ -1,97 +1,112 @@
 using UnityEngine;
-using TMPro;
+using UnityEngine.UI;
 using System;
 
 public class EditableTimer : MonoBehaviour
 {
-    [Header("Configuraci�n del Timer")]
-    [Tooltip("Duracion del temporizador en segundos.")]
-    [SerializeField] private float timerDuration = 180f;
+    [Header("Configuración del Timer")]
+    [Tooltip("Duración del temporizador en segundos")]
+    [SerializeField] private float timerDuration;
+
+    [Tooltip("Tiempo que se agrega cuando se llama AddTime()")]
     [SerializeField] private float timeAdded;
 
+    [Header("UI")]
+    [Tooltip("Imagen con Fill Radial")]
+    [SerializeField] private Image timerFillImage;
+
     [Header("Eventos del Timer")]
-    [Tooltip("Evento que se dispara cuando el temporizador termina.")]
     public static Action onTimerEnd;
 
+    [Header("Referencias")]
     [SerializeField] private Canvas endGame;
+    [SerializeField] private TriggerCutscene triggerCutscene;
 
     private float remainingTime;
-    private bool isRunning = false;
+    private bool isRunning;
 
-    [SerializeField] private TextMeshProUGUI tmp;
-
-    [SerializeField] private TriggerCutscene triggerCutscene;
-   
-    void Start()
-    {
-       
-    }
+    // =========================
+    // UNITY LIFECYCLE
+    // =========================
 
     private void OnEnable()
     {
-        triggerCutscene.startGame += StartTimer;
+        if (triggerCutscene != null)
+            triggerCutscene.startGame += StartTimer;
     }
 
     private void OnDisable()
     {
-        triggerCutscene.startGame -= StartTimer;
+        if (triggerCutscene != null)
+            triggerCutscene.startGame -= StartTimer;
     }
 
-    void Update()
+    private void Update()
     {
-        if (isRunning)
+        if (!isRunning) return;
+
+        remainingTime -= Time.deltaTime;
+
+        // Fill radial (1 → 0)
+        float fillAmount = Mathf.Clamp01(remainingTime / timerDuration);
+        timerFillImage.fillAmount = fillAmount;
+
+        // Feedback visual de urgencia (opcional)
+        if (fillAmount <= 0.2f)
+            timerFillImage.color = Color.red;
+
+        if (remainingTime <= 0f)
         {
-            remainingTime -= Time.deltaTime;
-            var remTime = ConvertirATiempo(remainingTime);
-            //tmp.text = remTime.ToString();
+            remainingTime = 0f;
+            timerFillImage.fillAmount = 0f;
+            isRunning = false;
 
-            Debug.Log(remTime.ToString());
+            EndTime();
+            onTimerEnd?.Invoke();
 
-            if (remainingTime <= 0)
-            {
-                isRunning = false;
-                remainingTime = 0;
-                EndTime();
-                onTimerEnd?.Invoke();
-                Time.timeScale = 0.1f;
-            }
+            Time.timeScale = 0.1f;
         }
     }
 
-    /// <summary>
-    /// Inicia el temporizador.
-    /// </summary>
+    // =========================
+    // TIMER CONTROLS
+    // =========================
+
     public void StartTimer()
     {
-        Debug.Log("EMPEZAMOS MI GENTE");
+        Debug.Log("⏱️ Timer iniciado");
+
         remainingTime = timerDuration;
         isRunning = true;
+
+        timerFillImage.fillAmount = 1f;
+        timerFillImage.color = Color.white;
     }
 
-    [ContextMenu("ResetTime")]
+    [ContextMenu("Reset Timer")]
     public void ResetTimer()
     {
         remainingTime = timerDuration;
         isRunning = false;
-    }
 
-    public void EndTime()
-    {
-        //endGame.gameObject.SetActive(true);
-        Debug.Log("SEACABOOOO");
-        //endGame.gameObject.transform.SetParent(gameObject.transform);
+        timerFillImage.fillAmount = 1f;
+        timerFillImage.color = Color.white;
     }
 
     public void AddTime()
     {
-        remainingTime += timeAdded;
+        remainingTime = Mathf.Min(remainingTime + timeAdded, timerDuration);
     }
 
-    public string ConvertirATiempo(float tiempoEnSegundos)
-    {
-        int minutos = Mathf.FloorToInt(tiempoEnSegundos / 60f);
-        int segundos = Mathf.FloorToInt(tiempoEnSegundos % 60f);
+    // =========================
+    // END GAME
+    // =========================
 
-        return string.Format("{0:00}:{1:00}", minutos, segundos);
+    private void EndTime()
+    {
+        Debug.Log("⏰ TIEMPO TERMINADO");
+
+        if (endGame != null)
+            endGame.gameObject.SetActive(true);
     }
 }

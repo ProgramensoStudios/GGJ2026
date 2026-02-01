@@ -2,6 +2,8 @@ using System.Collections;
 using System.Runtime.ExceptionServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -52,6 +54,11 @@ public class PlayerMovement : MonoBehaviour
     private float staminaTimer;
     private bool isTired;
 
+    [Header("UI - Stamina")]
+    [SerializeField] private Slider staminaSlider;
+    [SerializeField] private Image staminaFillImage;
+
+
     [Header("Interaction")]
     public float interactRange = 2f;
     public Transform faceTransform;
@@ -99,7 +106,10 @@ public class PlayerMovement : MonoBehaviour
         dashHash = Animator.StringToHash("Dash");
         jumpTriggerHash = Animator.StringToHash("Jump");
 
+        currentStamina = maxStamina;
 
+        staminaSlider.maxValue = maxStamina;
+        staminaSlider.value = currentStamina;
     }
 
 
@@ -245,13 +255,10 @@ public class PlayerMovement : MonoBehaviour
         {
             isCrouched = true;
             isSprinting = false;
-
-            transform.localScale = new Vector3(originalScale.x, crouchScaleY, originalScale.z);
         }
         else if (context.canceled)
         {
             isCrouched = false;
-            transform.localScale = originalScale;
         }
     }
 
@@ -369,7 +376,23 @@ public class PlayerMovement : MonoBehaviour
         {
             isTired = false;
         }
+
+        // UI UPDATE
+        staminaSlider.value = currentStamina;
+        UpdateStaminaColor();
     }
+    void UpdateStaminaColor()
+    {
+        float percent = currentStamina / maxStamina;
+
+        if (percent > 0.6f)
+            staminaFillImage.color = Color.green;
+        else if (percent > 0.3f)
+            staminaFillImage.color = Color.yellow;
+        else
+            staminaFillImage.color = Color.red;
+    }
+
 
     private IEnumerator MoveToPosition(Vector3 targetPosition, float duration) 
     { 
