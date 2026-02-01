@@ -22,7 +22,12 @@ public class TriggerCutscene : MonoBehaviour
         cutscene.gameObject.SetActive(true);
         StartCoroutine(SetOff());
         hasPlayed = true;
+        dynamicAudio.AddLayerSound(3);
+        dynamicAudio.LessLayerSound(0);
+        dynamicAudio.LessLayerSound(1);
+        dynamicAudio.LessLayerSound(2);
         
+
     }
     public IEnumerator SetOff()
     {
@@ -30,9 +35,5 @@ public class TriggerCutscene : MonoBehaviour
         cutscene.gameObject.SetActive(false);
         player.canMove = true;
         startGame?.Invoke();
-        dynamicAudio.AddLayerSound(3);
-        dynamicAudio.LessLayerSound(0);
-        dynamicAudio.LessLayerSound(1);
-        dynamicAudio.LessLayerSound(2);
     }
 }

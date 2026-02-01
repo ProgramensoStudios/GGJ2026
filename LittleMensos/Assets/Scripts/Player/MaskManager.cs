@@ -17,6 +17,7 @@ public class MaskManager : MonoBehaviour
     private HashSet<MaskType> unlockedMasks = new HashSet<MaskType>();
 
     [SerializeField] private DinamicAudio dynamicAudio;
+    [SerializeField] public bool isInDanger;
 
     public Action<MaskType> OnMaskChanged;
 
@@ -82,28 +83,73 @@ public class MaskManager : MonoBehaviour
         {
             case MaskType.Dash:
                 dashMask.SetActive(true);
-                dynamicAudio.AddLayerSound(3);
-                dynamicAudio.LessLayerSound(0);
-                dynamicAudio.LessLayerSound(1);
-                dynamicAudio.LessLayerSound(2);
-                dynamicAudio.LessLayerSound(4);
+                if (isInDanger)
+                {
+                    dynamicAudio.AddLayerSound(5);
+                    dynamicAudio.LessLayerSound(0);
+                    dynamicAudio.LessLayerSound(1);
+                    dynamicAudio.LessLayerSound(2);
+                    dynamicAudio.LessLayerSound(4);
+                    dynamicAudio.LessLayerSound(3);
+                    dynamicAudio.LessLayerSound(6);
+                }
+                else
+                {
+                    dynamicAudio.AddLayerSound(3);
+                    dynamicAudio.LessLayerSound(0);
+                    dynamicAudio.LessLayerSound(1);
+                    dynamicAudio.LessLayerSound(2);
+                    dynamicAudio.LessLayerSound(4);
+                    dynamicAudio.LessLayerSound(5);
+                    dynamicAudio.LessLayerSound(6);
+                }
                 break;
 
             case MaskType.Climb:
                 climbMask.SetActive(true);
-                dynamicAudio.AddLayerSound(3);
-                dynamicAudio.LessLayerSound(0);
-                dynamicAudio.LessLayerSound(1);
-                dynamicAudio.LessLayerSound(2);
-                dynamicAudio.LessLayerSound(4);
+                if (isInDanger)
+                {
+                    dynamicAudio.AddLayerSound(5);
+                    dynamicAudio.LessLayerSound(0);
+                    dynamicAudio.LessLayerSound(1);
+                    dynamicAudio.LessLayerSound(2);
+                    dynamicAudio.LessLayerSound(4);
+                    dynamicAudio.LessLayerSound(3);
+                    dynamicAudio.LessLayerSound(6);
+                }
+                else
+                {
+                    dynamicAudio.AddLayerSound(3);
+                    dynamicAudio.LessLayerSound(0);
+                    dynamicAudio.LessLayerSound(1);
+                    dynamicAudio.LessLayerSound(2);
+                    dynamicAudio.LessLayerSound(4);
+                    dynamicAudio.LessLayerSound(5);
+                    dynamicAudio.LessLayerSound(6);
+                }
                 break;
 
             case MaskType.None:
-                dynamicAudio.AddLayerSound(4);
-                dynamicAudio.LessLayerSound(0);
-                dynamicAudio.LessLayerSound(1);
-                dynamicAudio.LessLayerSound(2);
-                dynamicAudio.LessLayerSound(3);
+                if (isInDanger)
+                {
+                    dynamicAudio.AddLayerSound(6);
+                    dynamicAudio.LessLayerSound(0);
+                    dynamicAudio.LessLayerSound(1);
+                    dynamicAudio.LessLayerSound(2);
+                    dynamicAudio.LessLayerSound(4);
+                    dynamicAudio.LessLayerSound(3);
+                    dynamicAudio.LessLayerSound(5);
+                }
+                else
+                {
+                    dynamicAudio.AddLayerSound(4);
+                    dynamicAudio.LessLayerSound(0);
+                    dynamicAudio.LessLayerSound(1);
+                    dynamicAudio.LessLayerSound(2);
+                    dynamicAudio.LessLayerSound(3);
+                    dynamicAudio.LessLayerSound(5);
+                    dynamicAudio.LessLayerSound(6);
+                }
                 break;
         }
         OnMaskChanged?.Invoke(activeMask);
