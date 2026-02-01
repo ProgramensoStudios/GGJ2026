@@ -88,7 +88,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Dash",
+                    "name": "MaskAction",
                     "type": "Button",
                     "id": "9ce75745-66db-464e-b031-cf69581509e8",
                     "expectedControlType": "",
@@ -490,7 +490,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Dash",
+                    "action": "MaskAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -501,7 +501,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Dash",
+                    "action": "MaskAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

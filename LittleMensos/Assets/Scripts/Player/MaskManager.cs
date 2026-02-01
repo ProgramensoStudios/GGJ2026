@@ -58,6 +58,9 @@ public class MaskManager : MonoBehaviour
         if (unlockedMasks.Contains(MaskType.Climb))
             options.Add(MaskType.Climb);
 
+        if (options.Count <= 1)
+            return;
+
         int currentIndex = options.IndexOf(activeMask);
         int nextIndex = (currentIndex + 1) % options.Count;
 
