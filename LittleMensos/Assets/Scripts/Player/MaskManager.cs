@@ -69,7 +69,7 @@ public class MaskManager : MonoBehaviour
         UpdateMaskVisuals(); // CLAVE
 
         Debug.Log($"<color=yellow>Mask active: {activeMask}</color>");
-        OnMaskChanged?.Invoke(activeMask);
+       // OnMaskChanged?.Invoke(activeMask);
     }
 
 
@@ -95,6 +95,7 @@ public class MaskManager : MonoBehaviour
                 // no se prende nada
                 break;
         }
+        OnMaskChanged?.Invoke(activeMask);
     }
 
     // Ver si el jugador tiene una habilidad

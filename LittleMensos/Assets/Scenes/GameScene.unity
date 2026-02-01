@@ -1142,7 +1142,7 @@ ParticleSystem:
   m_GameObject: {fileID: 275264899}
   serializedVersion: 8
   lengthInSec: 5
-  simulationSpeed: 0.1
+  simulationSpeed: 0.5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -15465,7 +15465,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1962582823}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
   m_Name: 
@@ -15487,7 +15487,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3df8430a4b766b43a8263a601633c71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PostProcessChange
-  maskManager: {fileID: 0}
+  maskManager: {fileID: 728792135}
   volume: {fileID: 1962582829}
   vignetteOnIntensity: 0.4
   vignetteOffIntensity: 0.2
@@ -15888,7 +15888,7 @@ ParticleSystem:
   m_GameObject: {fileID: 2139282146}
   serializedVersion: 8
   lengthInSec: 5
-  simulationSpeed: 0.1
+  simulationSpeed: 0.5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
