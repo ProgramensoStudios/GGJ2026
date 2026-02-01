@@ -17,13 +17,18 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 currentVelocity;
 
     [Header("Jump")]
-    public float jumpForce = 5f;
     public bool isGrounded;
 
+    [Header("Jump Anticipation")]
+    public float jumpForce = 5f;
+    public float jumpAnticipationDelay = 0.08f; // animación primero
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
 
     private bool jumpHeld;
+    private bool jumpInProgress;
+    private Coroutine jumpRoutine;
+
 
     [Header("Dash")]
     public float dashForce = 10f;
@@ -63,6 +68,17 @@ public class PlayerMovement : MonoBehaviour
     private bool isTeleporting = false;
     private Transform currentTeleport;
 
+    [Header("Animator")]
+    [SerializeField] private Animator animator;
+
+    private int speedHash;
+    private int verticalVelocityHash;
+    private int isGroundedHash;
+    private int isCrouchedHash;
+    private int dashHash;
+    private int jumpTriggerHash;
+
+
     private Vector2 moveInput;
     private Rigidbody rb;
     private Vector3 originalScale;
@@ -75,7 +91,17 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         originalScale = transform.localScale;
         currentStamina = maxStamina;
+
+        speedHash = Animator.StringToHash("Speed");
+        verticalVelocityHash = Animator.StringToHash("VerticalVelocity");
+        isGroundedHash = Animator.StringToHash("isGrounded");
+        isCrouchedHash = Animator.StringToHash("isCrouching");
+        dashHash = Animator.StringToHash("Dash");
+        jumpTriggerHash = Animator.StringToHash("Jump");
+
+
     }
+
 
     private void FixedUpdate()
     {
@@ -85,7 +111,21 @@ public class PlayerMovement : MonoBehaviour
         ApplyMovement();
         RotateTowardsMovement();
         ApplyBetterJump();
+        UpdateAnimator();
     }
+
+    void UpdateAnimator()
+    {
+        float horizontalSpeed = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z).magnitude;
+        float speed = currentVelocity.magnitude;
+
+        animator.SetFloat("Speed", speed);
+        animator.SetFloat(verticalVelocityHash, rb.linearVelocity.y);
+        animator.SetBool(isGroundedHash, isGrounded);
+        animator.SetBool(isCrouchedHash, isCrouched);
+       
+    }
+
 
     // ===== MOVEMENT CORE =====
     void ApplyMovement()
@@ -119,15 +159,18 @@ public class PlayerMovement : MonoBehaviour
     // ===== JUMP FEELING =====
     void ApplyBetterJump()
     {
-        if (rb.linearVelocity.y < 0)
+        if (rb.linearVelocity.y < 0f)
         {
-            rb.linearVelocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.fixedDeltaTime;
+            rb.linearVelocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1f) * Time.fixedDeltaTime;
         }
-        else if (rb.linearVelocity.y > 0 && !jumpHeld)
+        else if (rb.linearVelocity.y > 0f && !jumpHeld)
         {
-            rb.linearVelocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.fixedDeltaTime;
+            rb.linearVelocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1f) * Time.fixedDeltaTime;
         }
     }
+
+
+
 
     // ===== INPUT SYSTEM =====
     public void OnMove(InputAction.CallbackContext context)
@@ -143,16 +186,41 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.performed && isGrounded && !isCrouched)
+        if (context.performed && isGrounded && !isCrouched && !jumpInProgress)
         {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            isGrounded = false;
+          
+            animator.SetTrigger(jumpTriggerHash);
+
+           
+            jumpInProgress = true;
             jumpHeld = true;
+
+           
+            jumpRoutine = StartCoroutine(DelayedJumpForce());
         }
 
         if (context.canceled)
             jumpHeld = false;
     }
+
+
+    private IEnumerator DelayedJumpForce()
+    {
+        yield return new WaitForSeconds(jumpAnticipationDelay);
+
+        // Limpia velocidad vertical (evita frame muerto)
+        rb.linearVelocity = new Vector3(
+            rb.linearVelocity.x,
+            0f,
+            rb.linearVelocity.z
+        );
+
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
+        isGrounded = false;
+    }
+
+
 
     public void OnMaskAction(InputAction.CallbackContext context)
     {
@@ -219,6 +287,7 @@ public class PlayerMovement : MonoBehaviour
     IEnumerator Dash()
     {
         isDashing = true;
+        animator.SetTrigger(dashHash);
 
         currentVelocity = Vector3.zero;
         rb.linearVelocity = Vector3.zero;
@@ -339,6 +408,15 @@ public class PlayerMovement : MonoBehaviour
             airDashed = false;
         }
     }
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = false;
+            jumpInProgress = false;
+        }
+    }
+
 
     // ===== GIZMOS =====
     private void OnDrawGizmosSelected()
