@@ -6,16 +6,21 @@ public class PatrolFly : MonoBehaviour, IPatrolBehaviour
     [SerializeField] float patrolRadius = 2f;
     [SerializeField] float returnSpeed = 3f;
 
+    private Animator anim;
+
     Vector3 originalPos;
 
     void Start()
     {
         originalPos = transform.position;
+        anim = GetComponent<Animator>();
     }
 
     public void Execute()
     {
         float distanceToOrigin = Vector3.Distance(transform.position, originalPos);
+        anim.SetBool("IsFollow", false);
+        anim.SetBool("IsAttack", false);
 
         if (distanceToOrigin > patrolRadius)
         {
@@ -29,7 +34,7 @@ public class PatrolFly : MonoBehaviour, IPatrolBehaviour
 
     void PatrolCurve()
     {
-        float vertical = Mathf.Sin(Time.time * 2f);
+        float vertical = Mathf.Sin(Time.time * -2f);
         float horizontal = Mathf.Sin(Time.time);
 
         Vector3 move =

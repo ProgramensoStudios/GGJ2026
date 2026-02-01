@@ -224,6 +224,7 @@ GameObject:
   - component: {fileID: 271731165}
   - component: {fileID: 271731164}
   - component: {fileID: 271731163}
+  - component: {fileID: 271731166}
   m_Layer: 0
   m_Name: FlyEnemy
   m_TagString: Untagged
@@ -280,12 +281,12 @@ SpriteRenderer:
   m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e1b0eebd93291a849ad20722aff4d011, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 11.721612, y: 7.8125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -332,7 +333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09394ef1eb84e8c42bb4dc52a772a040, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PatrolFly
-  speed: 3.5
+  speed: 3
   patrolRadius: 2
   returnSpeed: 5
 --- !u!114 &271731164
@@ -348,7 +349,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FollowFly
   player: {fileID: 721465032}
-  speed: 4.5
+  speed: 4
 --- !u!114 &271731165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -365,6 +366,28 @@ MonoBehaviour:
   gravity: 12
   minY: 3
   exitHeight: 5
+--- !u!95 &271731166
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271731159}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 56cd43858ec83a94fafb877f60efabec, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &295940876
 GameObject:
   m_ObjectHideFlags: 0
@@ -7206,11 +7229,12 @@ MonoBehaviour:
   vignetteOnIntensity: 0.4
   vignetteOffIntensity: 0.23
   fadeDuration: 0.3
-  noneMaskLift: {r: 1, g: 1, b: 1, a: 1}
-  dashMaskLift: {r: 1, g: 0, b: 0, a: 1}
-  climbMaskLift: {r: 0, g: 0, b: 1, a: 1}
-  liftIntensity: 0.2
-  firstTime: 1
+  noneGamma: {x: 0, y: 0, z: 0, w: -0.18}
+  noneGain: {x: 0, y: 0, z: 0, w: 0.73}
+  dashGamma: {x: 1, y: 0.64, z: 0.58, w: -0.43}
+  dashGain: {x: 0.99, y: 1, z: 1, w: 0.76}
+  climbGamma: {x: 0, y: 0, z: 0.15, w: -0.18}
+  climbGain: {x: 0, y: 0, z: 0.15, w: 0.73}
 --- !u!1 &2006625785
 GameObject:
   m_ObjectHideFlags: 0

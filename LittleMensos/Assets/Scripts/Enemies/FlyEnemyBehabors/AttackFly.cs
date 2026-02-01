@@ -14,6 +14,13 @@ public class AttackFly : MonoBehaviour, IAttackBehaviour
     float verticalSpeed;
     bool exiting;
 
+    private Animator anim;
+
+    private void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
+
     public void OnEnter(EnemyBrain brain)
     {
         Vector3 dir = (brain.player.position - transform.position).normalized;
@@ -25,6 +32,9 @@ public class AttackFly : MonoBehaviour, IAttackBehaviour
 
     public void Execute()
     {
+
+        anim.SetBool("IsAttack", true);
+        anim.SetBool("IsFollow", false);
         if (!exiting)
             verticalSpeed -= gravity * Time.deltaTime;
         else
