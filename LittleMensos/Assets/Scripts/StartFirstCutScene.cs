@@ -7,7 +7,7 @@ public class StartFirstCutScene : MonoBehaviour
     [SerializeField] private float secondsLoLast;
     [SerializeField] private PlayerMovement player;
 
-    void Start()
+    public void StartGame()
     {
         sequencer.SetActive(true);
         player.canMove = false;
