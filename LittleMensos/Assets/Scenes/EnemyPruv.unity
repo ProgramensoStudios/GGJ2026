@@ -220,6 +220,10 @@ GameObject:
   m_Component:
   - component: {fileID: 271731161}
   - component: {fileID: 271731160}
+  - component: {fileID: 271731162}
+  - component: {fileID: 271731165}
+  - component: {fileID: 271731164}
+  - component: {fileID: 271731163}
   m_Layer: 0
   m_Name: FlyEnemy
   m_TagString: Untagged
@@ -295,12 +299,65 @@ Transform:
   m_GameObject: {fileID: 271731159}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.68, y: 7.41, z: -11.61}
+  m_LocalPosition: {x: 20.09, y: 8.2, z: -11.61}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &271731162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271731159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 011a29f076f32cd47af823e4abfeff15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBrain
+  player: {fileID: 721465032}
+  detectRange: 10
+  attackRange: 2
+--- !u!114 &271731163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271731159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09394ef1eb84e8c42bb4dc52a772a040, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PatrolFly
+--- !u!114 &271731164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271731159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1065fbb3714b5524b9935a0bb9fcc878, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FollowFly
+  player: {fileID: 721465032}
+  speed: 60
+--- !u!114 &271731165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271731159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ce946eeef888d04a85240a08f63b4ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttackFly
 --- !u!1 &295940876
 GameObject:
   m_ObjectHideFlags: 0
@@ -620,6 +677,7 @@ GameObject:
   - component: {fileID: 721465034}
   - component: {fileID: 721465033}
   - component: {fileID: 721465035}
+  - component: {fileID: 721465036}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -736,7 +794,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17c043ad5aaa4a14f83550f85b341d11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  maskManager: {fileID: 0}
   walkSpeed: 5
   sprintSpeed: 8
   crouchSpeedMultiplier: 0.5
@@ -761,8 +818,6 @@ MonoBehaviour:
   interactRange: 2
   faceTransform: {fileID: 475053632}
   rotationSpeed: 3
-  maskOn: 0
-  mask: {fileID: 0}
   minZ: -25
   maxZ: 1
 --- !u!54 &721465034
@@ -974,6 +1029,21 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &721465036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721465028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb0ff227770564547849a04d236288bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MaskManager
+  dashMask: {fileID: 475053631}
+  climbMask: {fileID: 475053631}
+  activeMask: 0
 --- !u!1 &813250884
 GameObject:
   m_ObjectHideFlags: 0
@@ -7123,11 +7193,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3df8430a4b766b43a8263a601633c71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PostProcessChange
-  player: {fileID: 721465033}
+  maskManager: {fileID: 0}
   volume: {fileID: 1962582829}
   vignetteOnIntensity: 0.4
   vignetteOffIntensity: 0.23
   fadeDuration: 0.3
+  noneMaskLift: {r: 1, g: 1, b: 1, a: 1}
+  dashMaskLift: {r: 1, g: 0, b: 0, a: 1}
+  climbMaskLift: {r: 0, g: 0, b: 1, a: 1}
+  liftIntensity: 0.2
   firstTime: 1
 --- !u!1 &2006625785
 GameObject:
