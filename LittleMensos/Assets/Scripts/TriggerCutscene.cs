@@ -8,6 +8,7 @@ public class TriggerCutscene : MonoBehaviour
     public GameObject cutscene;
     public float timeToEnd;
     private bool hasPlayed = false;
+    [SerializeField] private PostProcessChange mainCam;
 
     public Action startGame;
 
@@ -24,5 +25,6 @@ public class TriggerCutscene : MonoBehaviour
         yield return new WaitForSeconds(timeToEnd);
         cutscene.gameObject.SetActive(false);
         startGame?.Invoke();
+        mainCam.startEffect = true;
     }
 }

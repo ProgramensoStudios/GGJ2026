@@ -8,15 +8,16 @@ public class PostProcessChange : MonoBehaviour
     [Header("References")]
     [SerializeField] private MaskManager maskManager;
     [SerializeField] private Volume volume;
+    public bool startEffect;
 
     [Header("Vignette Settings")]
     [SerializeField] private float vignetteOnIntensity = 0.4f;
     [SerializeField] private float vignetteOffIntensity = 0.2f;
     [SerializeField] private float fadeDuration = 0.5f;
 
-    [Header("Lift Gamma Gain - NONE")] //GRI
-    [SerializeField] private Vector4 noneGamma = new Vector4(1.00f, 1.00f, 1.00f, -0.39f);
-    [SerializeField] private Vector4 noneGain  = new Vector4(0.85f, 1.00f, 1.00f, 0.49f);
+    [Header("Lift Gamma Gain - NONE")] //GRIS
+    [SerializeField] private Vector4 noneGamma = new Vector4(0.98f, 1.00f, 1.00f, -0.42f);
+    [SerializeField] private Vector4 noneGain  = new Vector4(0.98f, 1.00f, 1.00f, 0.35f);
 
     [Header("Lift Gamma Gain - DASH")] //CAFE
     [SerializeField] private Vector4 dashGamma = new Vector4(1.00f, 0.64f, 0.58f, -0.43f);
@@ -41,8 +42,8 @@ public class PostProcessChange : MonoBehaviour
 
         vignette.active = true;
         liftGammaGain.active = true;
-        //Debug.Log("Gamma: " + liftGammaGain.gamma.value);
-       //Debug.Log("Gain: " + liftGammaGain.gain.value);
+        Debug.Log("Gamma: " + liftGammaGain.gamma.value);
+        Debug.Log("Gain: " + liftGammaGain.gain.value);
     }
 
     void OnEnable()
@@ -59,6 +60,7 @@ public class PostProcessChange : MonoBehaviour
 
     void HandleMaskChanged(MaskType mask)
     {
+        if(!startEffect) return;
         float targetVignette = vignetteOnIntensity;
 
         switch (mask)

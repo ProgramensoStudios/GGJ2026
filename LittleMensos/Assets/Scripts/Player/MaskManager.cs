@@ -69,11 +69,11 @@ public class MaskManager : MonoBehaviour
         UpdateMaskVisuals(); // CLAVE
 
         Debug.Log($"<color=yellow>Mask active: {activeMask}</color>");
-        OnMaskChanged?.Invoke(activeMask);
+       // OnMaskChanged?.Invoke(activeMask);
     }
 
 
-    void UpdateMaskVisuals()
+    public void UpdateMaskVisuals()
     {
         // APAGAMOS TODO SIEMPRE
         dashMask.SetActive(false);
@@ -95,9 +95,8 @@ public class MaskManager : MonoBehaviour
                 // no se prende nada
                 break;
         }
+        OnMaskChanged?.Invoke(activeMask);
     }
-
-
 
     // Ver si el jugador tiene una habilidad
     public bool CanDash() => activeMask == MaskType.Dash;
