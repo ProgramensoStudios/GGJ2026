@@ -35,12 +35,12 @@ public class PostProcessChange : MonoBehaviour
 
     void OnEnable()
     {
-        player.OnMaskStateChanged += HandleMaskChanged;
+        //player.OnMaskStateChanged += HandleMaskChanged;
     }
 
     void OnDisable()
     {
-        player.OnMaskStateChanged -= HandleMaskChanged;
+        //player.OnMaskStateChanged -= HandleMaskChanged;
     }
 
     void HandleMaskChanged(bool maskOn)
