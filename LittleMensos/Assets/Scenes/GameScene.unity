@@ -12474,7 +12474,7 @@ GameObject:
   - component: {fileID: 972561654}
   - component: {fileID: 972561653}
   m_Layer: 0
-  m_Name: MaskClimb (1)
+  m_Name: MaskClimb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12725,7 +12725,7 @@ GameObject:
   - component: {fileID: 1233642089}
   - component: {fileID: 1233642088}
   m_Layer: 0
-  m_Name: MaskClimb (2)
+  m_Name: MaskDash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
