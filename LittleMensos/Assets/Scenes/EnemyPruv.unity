@@ -6095,6 +6095,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   cutscene: {fileID: 2006625785}
   timeToEnd: 6
+  mainCam: {fileID: 0}
 --- !u!1 &1071030362
 GameObject:
   m_ObjectHideFlags: 0
@@ -6184,7 +6185,7 @@ SpriteRenderer:
   m_Size: {x: 18.13, y: 11.14}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1075381033
 GameObject:
@@ -7162,6 +7163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PostProcessChange
   maskManager: {fileID: 0}
   volume: {fileID: 1962582829}
+  startEffect: 0
   vignetteOnIntensity: 0.4
   vignetteOffIntensity: 0.23
   fadeDuration: 0.3
