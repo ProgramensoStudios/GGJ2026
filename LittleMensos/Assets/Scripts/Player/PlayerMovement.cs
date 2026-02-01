@@ -27,6 +27,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Dash")]
     public float dashForce = 10f;
     public float dashDuration = 0.15f;
+    private bool airDashed;
+
     public float dashPause = 0.05f;
 
     [Header("Crouch")]
@@ -188,26 +190,47 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    // ===== DASH =====
     IEnumerator Dash()
     {
         isDashing = true;
+
         currentVelocity = Vector3.zero;
         rb.linearVelocity = Vector3.zero;
 
         yield return new WaitForSeconds(dashPause);
 
-        Vector3 dashDir = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
-        if (dashDir == Vector3.zero)
-            dashDir = transform.right;
+        Vector3 dashDir;
+
+        if (!isGrounded)
+        {
+            if (airDashed) yield break;
+            airDashed = true;
+            // DASH AÉREO: adelante + arriba
+            dashDir = (transform.forward + Vector3.up * 0.7f).normalized;
+        }
+        else
+        {
+            // DASH TERRESTRE NORMAL
+            dashDir = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
+
+            if (dashDir == Vector3.zero)
+                dashDir = transform.forward;
+        }
 
         rb.AddForce(dashDir * dashForce, ForceMode.Impulse);
 
         yield return new WaitForSeconds(dashDuration);
 
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x * 0.3f, rb.linearVelocity.y, rb.linearVelocity.z * 0.3f);
+        // amortiguamos velocidad para que no se descontrole
+        rb.linearVelocity = new Vector3(
+            rb.linearVelocity.x * 0.3f,
+            rb.linearVelocity.y * 0.6f,
+            rb.linearVelocity.z * 0.3f
+        );
+
         isDashing = false;
     }
+
 
     // ===== ROTATION =====
     void RotateTowardsMovement()
@@ -272,7 +295,10 @@ public class PlayerMovement : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
+        {
             isGrounded = true;
+            airDashed = false;
+        }
     }
 
     // ===== GIZMOS =====
