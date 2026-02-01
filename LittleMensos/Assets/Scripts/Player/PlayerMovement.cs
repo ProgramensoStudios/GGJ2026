@@ -224,6 +224,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnMaskAction(InputAction.CallbackContext context)
     {
+        Debug.Log("A");
         if (context.performed && !isDashing && !isTired && MaskManager.Instance.CanDash())
         StartCoroutine(Dash());
 
