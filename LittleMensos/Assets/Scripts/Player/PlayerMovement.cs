@@ -6,6 +6,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("MaskManager")]
+    [SerializeField] private MaskManager maskManager;
+
     [Header("Movement")]
     public float walkSpeed = 4.5f;
     public float sprintSpeed = 7f;
