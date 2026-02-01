@@ -6787,7 +6787,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2566520288518191752, guid: 821fe68acbc93b84d86a3ec26cc49fd6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.37
+      value: 6.37
       objectReference: {fileID: 0}
     - target: {fileID: 2566520288518191752, guid: 821fe68acbc93b84d86a3ec26cc49fd6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7704,6 +7704,7 @@ MonoBehaviour:
   sequencer: {fileID: 1378133161}
   secondsLoLast: 30
   player: {fileID: 728792136}
+  dynamicAudio: {fileID: 0}
 --- !u!114 &620998509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7717,9 +7718,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   cutscene: {fileID: 1765866419}
+  enemies: {fileID: 0}
+  marco: {fileID: 0}
   timeToEnd: 6
   player: {fileID: 728792136}
   mainCam: {fileID: 0}
+  dynamicAudio: {fileID: 0}
 --- !u!65 &620998510
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13038,6 +13042,8 @@ MonoBehaviour:
   dashMask: {fileID: 5813635772947799172}
   climbMask: {fileID: 318990832}
   activeMask: 0
+  dynamicAudio: {fileID: 0}
+  isInDanger: 0
 --- !u!114 &728792136
 MonoBehaviour:
   m_ObjectHideFlags: 0
