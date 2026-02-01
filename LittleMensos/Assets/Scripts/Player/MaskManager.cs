@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum MaskType { None, Dash, Climb }
 
@@ -18,6 +19,11 @@ public class MaskManager : MonoBehaviour
 
     [SerializeField] private DinamicAudio dynamicAudio;
     [SerializeField] public bool isInDanger;
+
+    public Image imgUI;
+    public Sprite noMask;
+    public Sprite maskDash;
+    public Sprite maskClimb;
 
     public Action<MaskType> OnMaskChanged;
 
@@ -83,6 +89,7 @@ public class MaskManager : MonoBehaviour
         {
             case MaskType.Dash:
                 dashMask.SetActive(true);
+                imgUI.sprite = maskDash;
                 if (isInDanger)
                 {
                     dynamicAudio.AddLayerSound(5);
@@ -107,6 +114,7 @@ public class MaskManager : MonoBehaviour
 
             case MaskType.Climb:
                 climbMask.SetActive(true);
+                imgUI.sprite = maskClimb;
                 if (isInDanger)
                 {
                     dynamicAudio.AddLayerSound(5);
@@ -130,6 +138,7 @@ public class MaskManager : MonoBehaviour
                 break;
 
             case MaskType.None:
+                imgUI.sprite = noMask;
                 if (isInDanger)
                 {
                     dynamicAudio.AddLayerSound(6);
