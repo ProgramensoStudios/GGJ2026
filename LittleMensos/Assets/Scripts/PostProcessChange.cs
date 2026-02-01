@@ -8,6 +8,7 @@ public class PostProcessChange : MonoBehaviour
     [Header("References")]
     [SerializeField] private MaskManager maskManager;
     [SerializeField] private Volume volume;
+    public bool startEffect;
 
     [Header("Vignette Settings")]
     [SerializeField] private float vignetteOnIntensity = 0.4f;
@@ -59,6 +60,7 @@ public class PostProcessChange : MonoBehaviour
 
     void HandleMaskChanged(MaskType mask)
     {
+        if(!startEffect) return;
         float targetVignette = vignetteOnIntensity;
 
         switch (mask)
