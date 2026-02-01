@@ -73,7 +73,7 @@ public class MaskManager : MonoBehaviour
     }
 
 
-    void UpdateMaskVisuals()
+    public void UpdateMaskVisuals()
     {
         // APAGAMOS TODO SIEMPRE
         dashMask.SetActive(false);
@@ -96,8 +96,6 @@ public class MaskManager : MonoBehaviour
                 break;
         }
     }
-
-
 
     // Ver si el jugador tiene una habilidad
     public bool CanDash() => activeMask == MaskType.Dash;

@@ -10,6 +10,8 @@ public class MaskObject : MonoBehaviour
         {
             MaskManager.Instance.UnlockMask(maskType);
             Destroy(gameObject);
+            MaskManager.Instance.activeMask = maskType;
+            MaskManager.Instance.UpdateMaskVisuals();
         }
     }
 }
