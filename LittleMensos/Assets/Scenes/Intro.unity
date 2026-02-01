@@ -4112,7 +4112,7 @@ MonoBehaviour:
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 4294967295
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
@@ -4170,11 +4170,12 @@ MonoBehaviour:
   vignetteOnIntensity: 0.4
   vignetteOffIntensity: 0.2
   fadeDuration: 0.5
-  noneMaskLift: {r: 1, g: 1, b: 1, a: 1}
-  dashMaskLift: {r: 1, g: 0, b: 0, a: 1}
-  climbMaskLift: {r: 0, g: 0, b: 1, a: 1}
-  liftIntensity: 0.2
-  firstTime: 1
+  noneGamma: {x: 0, y: 0, z: 0, w: -0.18}
+  noneGain: {x: 0, y: 0, z: 0, w: 0.73}
+  dashGamma: {x: 1, y: 0.64, z: 0.58, w: -0.43}
+  dashGain: {x: 0.99, y: 1, z: 1, w: 0.76}
+  climbGamma: {x: 0, y: 0, z: 0.15, w: -0.18}
+  climbGain: {x: 0, y: 0, z: 0.15, w: 0.73}
 --- !u!1 &1964172901
 GameObject:
   m_ObjectHideFlags: 0
