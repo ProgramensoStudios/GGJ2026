@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.ExceptionServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -56,6 +57,10 @@ public class PlayerMovement : MonoBehaviour
     [Header("Game Limits Z")]
     public float minZ = -3f;
     public float maxZ = 3f;
+
+    [Header("Climb")]
+    public float climbDuration = 1f; // adjustable time
+    private bool isClimbing = false;
 
     private Vector2 moveInput;
     private Rigidbody rb;
@@ -148,7 +153,7 @@ public class PlayerMovement : MonoBehaviour
             jumpHeld = false;
     }
 
-    public void OnDash(InputAction.CallbackContext context)
+    public void OnMaskAction(InputAction.CallbackContext context)
     {
         if (context.performed && !isDashing && !isTired && MaskManager.Instance.CanDash())
         StartCoroutine(Dash());
@@ -276,7 +281,7 @@ public class PlayerMovement : MonoBehaviour
     // ===== INTERACT =====
     public void Interact()
     {
-        if (faceTransform == null) return;
+        if (faceTransform == null || isClimbing) return;
 
         RaycastHit hit;
         Vector3 origin = faceTransform.position;
@@ -284,11 +289,42 @@ public class PlayerMovement : MonoBehaviour
 
         if (Physics.Raycast(origin, direction, out hit, interactRange))
         {
-            if (hit.collider.CompareTag("Interactable"))
+        Debug.Log("ENTRA");
+            if (hit.collider.CompareTag("Climbable"))
             {
-                Debug.Log($"<color=green>Interacted with: {hit.collider.name}</color>");
+                Transform climbTarget = hit.collider.transform;
+
+                if (climbTarget.childCount == 0)
+                {
+                    Debug.LogWarning("Climbable object has no children!");
+                    return;
+                }
+
+                Transform targetPoint = climbTarget.GetChild(0);
+                StartCoroutine(MoveToPosition(targetPoint.position, climbDuration));
             }
         }
+    }
+
+    private IEnumerator MoveToPosition(Vector3 targetPosition, float duration)
+    {
+        isClimbing = true;
+        canMove = false;
+
+        Vector3 startPosition = transform.position;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            transform.position = Vector3.Lerp(startPosition, targetPosition, t);
+            yield return null;
+        }
+
+        transform.position = targetPosition;
+        isClimbing = false;
+        canMove = true;
     }
 
     // ===== GROUND CHECK =====
