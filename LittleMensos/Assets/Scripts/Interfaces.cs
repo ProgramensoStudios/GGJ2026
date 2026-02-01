@@ -17,7 +17,9 @@ public interface IFollowBehaviour
 
 public interface IAttackBehaviour
 {
+    void OnEnter(EnemyBrain brain);
     void Execute();
+    bool IsFinished();
 }
 public class StateMachine
 {

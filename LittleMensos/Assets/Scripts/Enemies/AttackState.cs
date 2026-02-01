@@ -2,21 +2,26 @@ using UnityEngine;
 
 public class AttackState : IState
 {
-    private EnemyBrain brain;
+    EnemyBrain brain;
 
     public AttackState(EnemyBrain brain)
     {
         this.brain = brain;
     }
 
-    public void Enter() { }
+    public void Enter()
+    {
+        brain.attack?.OnEnter(brain);
+    }
 
     public void Update()
     {
         brain.attack?.Execute();
 
-        if (!brain.InAttackRange())
-            brain.fsm.ChangeState(brain.followState);
+        if (brain.attack != null && brain.attack.IsFinished())
+        {
+            brain.fsm.ChangeState(new FollowState(brain));
+        }
     }
 
     public void Exit() { }

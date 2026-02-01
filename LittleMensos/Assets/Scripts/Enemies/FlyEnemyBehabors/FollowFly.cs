@@ -3,11 +3,12 @@ using UnityEngine;
 public class FollowFly : MonoBehaviour, IFollowBehaviour
 {
     public Transform player;
-    public float speed = 60f;
+    public float speed;
 
     public void Execute()
     {
         Debug.Log("Follow");
-       transform.RotateAround(player.position, new Vector3(-3,-0.3f,-3), speed * Time.deltaTime);
+        Vector3 dir = (player.position - transform.position).normalized;
+        transform.position += dir*(speed * Time.deltaTime);
     }
 }

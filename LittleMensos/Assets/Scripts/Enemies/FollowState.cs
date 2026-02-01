@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FollowState : IState
 {
-    private EnemyBrain brain;
+    EnemyBrain brain;
 
     public FollowState(EnemyBrain brain)
     {
@@ -13,10 +13,19 @@ public class FollowState : IState
 
     public void Update()
     {
-        brain.follow?.Execute();
+        if (!brain.PlayerDetected())
+        {
+            brain.fsm.ChangeState(new PatrolState(brain));
+            return;
+        }
 
         if (brain.InAttackRange())
-            brain.fsm.ChangeState(brain.attackState);
+        {
+            brain.fsm.ChangeState(new AttackState(brain));
+            return;
+        }
+
+        brain.follow?.Execute();
     }
 
     public void Exit() { }

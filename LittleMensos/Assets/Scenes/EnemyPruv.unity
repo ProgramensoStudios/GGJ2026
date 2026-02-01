@@ -299,7 +299,7 @@ Transform:
   m_GameObject: {fileID: 271731159}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.09, y: 8.2, z: -11.61}
+  m_LocalPosition: {x: 20.09, y: 10, z: -11.61}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -318,8 +318,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBrain
   player: {fileID: 721465032}
-  detectRange: 10
-  attackRange: 2
+  detectRange: 9
+  attackRange: 6
 --- !u!114 &271731163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,6 +332,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09394ef1eb84e8c42bb4dc52a772a040, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PatrolFly
+  speed: 3.5
+  patrolRadius: 2
+  returnSpeed: 5
 --- !u!114 &271731164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,7 +348,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FollowFly
   player: {fileID: 721465032}
-  speed: 60
+  speed: 4.5
 --- !u!114 &271731165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,6 +361,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ce946eeef888d04a85240a08f63b4ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackFly
+  horizontalSpeed: 4
+  gravity: 12
+  minY: 3
+  exitHeight: 5
 --- !u!1 &295940876
 GameObject:
   m_ObjectHideFlags: 0
@@ -820,6 +827,7 @@ MonoBehaviour:
   rotationSpeed: 3
   minZ: -25
   maxZ: 1
+  teleportDuration: 1
 --- !u!54 &721465034
 Rigidbody:
   m_ObjectHideFlags: 0

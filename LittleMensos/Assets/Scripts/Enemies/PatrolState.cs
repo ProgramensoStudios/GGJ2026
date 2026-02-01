@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PatrolState : IState
 {
-    private EnemyBrain brain;
+    EnemyBrain brain;
 
     public PatrolState(EnemyBrain brain)
     {
@@ -13,10 +13,13 @@ public class PatrolState : IState
 
     public void Update()
     {
-        brain.patrol?.Execute();
-
         if (brain.PlayerDetected())
-            brain.fsm.ChangeState(brain.followState);
+        {
+            brain.fsm.ChangeState(new FollowState(brain));
+            return;
+        }
+
+        brain.patrol?.Execute();
     }
 
     public void Exit() { }

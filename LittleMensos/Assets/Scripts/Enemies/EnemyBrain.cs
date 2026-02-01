@@ -43,20 +43,19 @@ public class EnemyBrain : MonoBehaviour
     void Update()
     {
         fsm.Update();
+        transform.position = new Vector3(transform.position.x, transform.position.y, player.transform.position.z);
     }
 
     //  Decisiones (NO comportamiento)
     public bool PlayerDetected()
     {
-        if (player == null) return false;
-
         return Vector3.Distance(transform.position, player.position) <= detectRange;
     }
 
     public bool InAttackRange()
     {
-        if (player == null) return false;
-
         return Vector3.Distance(transform.position, player.position) <= attackRange;
     }
+
+
 }
