@@ -6,6 +6,7 @@ using System;
 public class TriggerCutscene : MonoBehaviour
 {
     public GameObject cutscene;
+    public GameObject enemies;
     public float timeToEnd;
     private bool hasPlayed = false;
     [SerializeField] private PlayerMovement player;
@@ -16,6 +17,7 @@ public class TriggerCutscene : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (hasPlayed) return;
+        enemies.SetActive(true);
         player.canMove = false;
         cutscene.gameObject.SetActive(true);
         StartCoroutine(SetOff());
@@ -29,5 +31,7 @@ public class TriggerCutscene : MonoBehaviour
         player.canMove = true;
         startGame?.Invoke();
         mainCam.startEffect = true;
+        yield return new WaitForSeconds(1f);
+        enemies.SetActive(false);
     }
 }
