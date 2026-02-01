@@ -18,6 +18,8 @@ public class TriggerCutscene : MonoBehaviour
     [SerializeField] private PlayerMovement player;
     [SerializeField] private PostProcessChange mainCam;
 
+    [SerializeField] private DinamicAudio dynamicAudio;
+
     public Action startGame;
 
     private void OnTriggerEnter(Collider other)
@@ -31,6 +33,12 @@ public class TriggerCutscene : MonoBehaviour
 
         StartCoroutine(SetOff());
         hasPlayed = true;
+        dynamicAudio.AddLayerSound(3);
+        dynamicAudio.LessLayerSound(0);
+        dynamicAudio.LessLayerSound(1);
+        dynamicAudio.LessLayerSound(2);
+        
+
     }
 
     public IEnumerator SetOff()

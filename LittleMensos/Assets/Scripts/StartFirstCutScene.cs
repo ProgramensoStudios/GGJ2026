@@ -6,6 +6,7 @@ public class StartFirstCutScene : MonoBehaviour
     [SerializeField] private GameObject sequencer;
     [SerializeField] private float secondsLoLast;
     [SerializeField] private PlayerMovement player;
+    [SerializeField] private DinamicAudio dynamicAudio;
 
     public void StartGame()
     {
@@ -19,6 +20,9 @@ public class StartFirstCutScene : MonoBehaviour
         yield return new WaitForSeconds(secondsLoLast);
         sequencer.SetActive(false);
         player.canMove = true;
+        dynamicAudio.AddLayerSound(2);
+        dynamicAudio.LessLayerSound(1);
+        dynamicAudio.LessLayerSound(0);
     }
 
 }

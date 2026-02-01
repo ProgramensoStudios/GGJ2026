@@ -10,6 +10,7 @@ public class FollowFoll : MonoBehaviour, IFollowBehaviour
 
     void Start()
     {
+        player = GameObject.FindFirstObjectByType<PlayerMovement>().gameObject.transform;
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
     }

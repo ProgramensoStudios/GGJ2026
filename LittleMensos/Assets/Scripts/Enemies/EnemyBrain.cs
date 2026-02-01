@@ -34,8 +34,7 @@ public class EnemyBrain : MonoBehaviour
 
     void Start()
     {
-        if (player == null)
-            player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        player = GameObject.FindFirstObjectByType<PlayerMovement>().gameObject.transform;
 
         fsm.ChangeState(patrolState);
     }

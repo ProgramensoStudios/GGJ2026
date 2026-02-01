@@ -34,6 +34,7 @@ public class DinamicAudio : MonoBehaviour
 
     public void AddLayerSound(int targetAudio)
     {
+        Debug.Log("Music Chance");
         StartCoroutine(Fade(targetAudio, 1, timeChange));
     }
     public void LessLayerSound(int targetAudio)
