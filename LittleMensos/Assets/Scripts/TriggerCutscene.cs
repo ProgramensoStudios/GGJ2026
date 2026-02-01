@@ -9,6 +9,7 @@ public class TriggerCutscene : MonoBehaviour
     public float timeToEnd;
     private bool hasPlayed = false;
     [SerializeField] private PlayerMovement player;
+    [SerializeField] private PostProcessChange mainCam;
 
     public Action startGame;
 
