@@ -44,7 +44,7 @@ public class PostProcessChange : MonoBehaviour
 
         if (volume.profile.TryGet(out liftGammaGain))
         {
-            liftGammaGain.active = true;
+            liftGammaGain.active = false;
         }
         else
         {

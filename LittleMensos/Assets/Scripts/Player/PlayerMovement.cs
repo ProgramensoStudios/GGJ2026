@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.ExceptionServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -56,6 +57,11 @@ public class PlayerMovement : MonoBehaviour
     [Header("Game Limits Z")]
     public float minZ = -3f;
     public float maxZ = 3f;
+
+    [Header("Teleport")]
+    public float teleportDuration = 1f; // adjustable time
+    private bool isTeleporting = false;
+    private Transform currentTeleport;
 
     private Vector2 moveInput;
     private Rigidbody rb;
@@ -148,10 +154,14 @@ public class PlayerMovement : MonoBehaviour
             jumpHeld = false;
     }
 
-    public void OnDash(InputAction.CallbackContext context)
+    public void OnMaskAction(InputAction.CallbackContext context)
     {
         if (context.performed && !isDashing && !isTired && MaskManager.Instance.CanDash())
         StartCoroutine(Dash());
+
+        if (context.performed && !isTeleporting && currentTeleport!=null && MaskManager.Instance.CanClimb())
+            StartTeleport();
+
     }
 
     void CheckTreeClimb()
@@ -176,10 +186,13 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    /*
     public void OnInteract(InputAction.CallbackContext context)
     {
         if (context.started) Interact();
     }
+    */
+
 
     public void OnMask(InputAction.CallbackContext context)
     {
@@ -187,6 +200,19 @@ public class PlayerMovement : MonoBehaviour
         {
             MaskManager.Instance.CycleMask();
         }
+    }
+
+    public void StartTeleport()
+    {
+        if (currentTeleport.childCount == 0)
+        {
+            Debug.LogWarning("Climbable object has no children!");
+            return;
+        }
+
+        Debug.Log("DALE");
+        Transform targetPoint = currentTeleport.GetChild(0);
+        StartCoroutine(MoveToPosition(targetPoint.position, teleportDuration));
     }
 
 
@@ -273,23 +299,36 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // ===== INTERACT =====
-    public void Interact()
+    private IEnumerator MoveToPosition(Vector3 targetPosition, float duration) 
+    { 
+        isTeleporting = true;
+        canMove = false;
+        Vector3 startPosition = transform.position; 
+        float elapsed = 0f; 
+        while (elapsed < duration) { elapsed += Time.deltaTime; float t = elapsed / duration; transform.position = Vector3.Lerp(startPosition, targetPosition, t); 
+            yield return null; 
+        } 
+        transform.position = targetPosition; 
+        isTeleporting= false; canMove = true; 
+    }
+
+    // TRIGGERS
+    private void OnTriggerEnter(Collider other)
     {
-        if (faceTransform == null) return;
-
-        RaycastHit hit;
-        Vector3 origin = faceTransform.position;
-        Vector3 direction = faceTransform.forward;
-
-        if (Physics.Raycast(origin, direction, out hit, interactRange))
+        if (other.CompareTag("Teleport"))
         {
-            if (hit.collider.CompareTag("Interactable"))
-            {
-                Debug.Log($"<color=green>Interacted with: {hit.collider.name}</color>");
-            }
+            currentTeleport = other.transform;
         }
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Teleport") && other.transform == currentTeleport)
+        {
+            currentTeleport = null;
+        }
+    }
+
 
     // ===== GROUND CHECK =====
     private void OnCollisionEnter(Collision collision)

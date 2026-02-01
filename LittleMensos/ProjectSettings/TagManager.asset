@@ -7,6 +7,8 @@ TagManager:
   - Ground
   - Interactable
   - Mask
+  - Climbable
+  - Teleport
   layers:
   - Default
   - TransparentFX
