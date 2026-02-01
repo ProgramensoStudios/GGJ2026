@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -7,22 +7,24 @@ public class PostProcessChange : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private MaskManager maskManager;
-    public Volume volume;
+    [SerializeField] private Volume volume;
 
     [Header("Vignette Settings")]
-    public float vignetteOnIntensity = 0.4f;
-    public float vignetteOffIntensity = 0.2f;
-    public float fadeDuration = 0.5f;
+    [SerializeField] private float vignetteOnIntensity = 0.4f;
+    [SerializeField] private float vignetteOffIntensity = 0.2f;
+    [SerializeField] private float fadeDuration = 0.5f;
 
-    [Header("LiftGammaGain Settings")]
-    public Color noneMask = Color.white;
-    public Color dashMask = Color.red;
-    public Color climbMask = Color.blue;
+    [Header("Lift Gamma Gain - NONE")] //GRIS
+    [SerializeField] private Vector4 noneGamma = new Vector4(0.98f, 1.00f, 1.00f, -0.42f);
+    [SerializeField] private Vector4 noneGain  = new Vector4(0.98f, 1.00f, 1.00f, 0.35f);
 
-    [Range(-1f, 1f)]
-    public float liftIntensity = 0.2f;
+    [Header("Lift Gamma Gain - DASH")] //CAFE
+    [SerializeField] private Vector4 dashGamma = new Vector4(1.00f, 0.64f, 0.58f, -0.43f);
+    [SerializeField] private Vector4 dashGain  = new Vector4(0.99f, 1.00f, 1.00f, 0.76f);
 
-    public bool firstTime = true;
+    [Header("Lift Gamma Gain - CLIMB")] //AZUL
+    [SerializeField] private Vector4 climbGamma = new Vector4(0f, 0f, 0.15f, -0.18f);
+    [SerializeField] private Vector4 climbGain  = new Vector4(0f, 0f, 0.15f, 0.73f);
 
     private Vignette vignette;
     private LiftGammaGain liftGammaGain;
@@ -30,26 +32,17 @@ public class PostProcessChange : MonoBehaviour
 
     void Awake()
     {
-        if (volume.profile.TryGet(out vignette))
-        {
-            vignette.active = true;
-
-            if (!firstTime)
-                vignette.intensity.value = vignetteOnIntensity;
-        }
-        else
-        {
+        
+        if (!volume.profile.TryGet(out vignette))
             Debug.LogError("Vignette override not found in Volume");
-        }
 
-        if (volume.profile.TryGet(out liftGammaGain))
-        {
-            liftGammaGain.active = true;
-        }
-        else
-        {
+        if (!volume.profile.TryGet(out liftGammaGain))
             Debug.LogError("LiftGammaGain override not found in Volume");
-        }
+
+        vignette.active = true;
+        liftGammaGain.active = true;
+        Debug.Log("Gamma: " + liftGammaGain.gamma.value);
+        Debug.Log("Gain: " + liftGammaGain.gain.value);
     }
 
     void OnEnable()
@@ -66,29 +59,23 @@ public class PostProcessChange : MonoBehaviour
 
     void HandleMaskChanged(MaskType mask)
     {
-        float targetVignette;
-        Color targetLiftColor;
+        float targetVignette = vignetteOnIntensity;
 
         switch (mask)
         {
             case MaskType.None:
+                ApplyLiftGammaGain(noneGamma, noneGain);
                 targetVignette = vignetteOnIntensity;
-                targetLiftColor = noneMask;
                 break;
 
             case MaskType.Dash:
+                ApplyLiftGammaGain(dashGamma, dashGain);
                 targetVignette = vignetteOffIntensity;
-                targetLiftColor = dashMask;
                 break;
 
             case MaskType.Climb:
+                ApplyLiftGammaGain(climbGamma, climbGain);
                 targetVignette = vignetteOffIntensity;
-                targetLiftColor = climbMask;
-                break;
-
-            default:
-                targetVignette = vignetteOnIntensity;
-                targetLiftColor = noneMask;
                 break;
         }
 
@@ -96,8 +83,6 @@ public class PostProcessChange : MonoBehaviour
             StopCoroutine(fadeRoutine);
 
         fadeRoutine = StartCoroutine(FadeVignette(targetVignette));
-
-        ApplyLift(targetLiftColor);
     }
 
     IEnumerator FadeVignette(float target)
@@ -108,23 +93,17 @@ public class PostProcessChange : MonoBehaviour
         while (time < fadeDuration)
         {
             time += Time.deltaTime;
-            float t = time / fadeDuration;
-            vignette.intensity.value = Mathf.Lerp(start, target, t);
+            vignette.intensity.value = Mathf.Lerp(start, target, time / fadeDuration);
             yield return null;
         }
 
         vignette.intensity.value = target;
     }
 
-    void ApplyLift(Color color)
+    void ApplyLiftGammaGain(Vector4 gamma, Vector4 gain)
     {
-        Vector4 liftValue = new Vector4(
-            color.r * liftIntensity,
-            color.g * liftIntensity,
-            color.b * liftIntensity,
-            0f
-        );
-
-        liftGammaGain.lift.Override(liftValue);
+        liftGammaGain.gamma.Override(gamma);
+        liftGammaGain.gain.Override(gain);
     }
+
 }
