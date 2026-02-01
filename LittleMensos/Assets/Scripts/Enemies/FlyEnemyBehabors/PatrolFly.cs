@@ -52,4 +52,9 @@ public class PatrolFly : MonoBehaviour, IPatrolBehaviour
             returnSpeed * Time.deltaTime
         );
     }
+
+    private void OnBecameVisible()
+    {
+        SFXManager.Instance.Play("FlyEnemy", transform.position );
+    }
 }

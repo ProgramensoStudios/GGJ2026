@@ -12,6 +12,7 @@ public class MenuManager : MonoBehaviour
     {
         da.AddLayerSound(1);
         da.LessLayerSound(0);
+        SFXManager.Instance.Play("Inicio", Vector3.zero);
         StartCoroutine(DelayToChange());
     }
 

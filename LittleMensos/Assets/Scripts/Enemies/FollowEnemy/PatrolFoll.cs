@@ -95,4 +95,9 @@ public class PatrolFoll : MonoBehaviour, IPatrolBehaviour
         else if (dirX < -0.01f)
             sprite.flipX = true;
     }
+
+    private void OnBecameVisible()
+    {
+        SFXManager.Instance.Play("FollowEnemy", transform.position);
+    }
 }

@@ -56,7 +56,7 @@ public class MaskManager : MonoBehaviour
     public void CycleMask()
     {
         List<MaskType> options = new List<MaskType> { MaskType.None };
-
+        SFXManager.Instance.Play("Whoosh", transform.position);
         if (unlockedMasks.Contains(MaskType.Dash))
             options.Add(MaskType.Dash);
 

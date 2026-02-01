@@ -12,6 +12,7 @@ public class MaskObject : MonoBehaviour
             Destroy(gameObject);
             MaskManager.Instance.activeMask = maskType;
             MaskManager.Instance.UpdateMaskVisuals();
+            SFXManager.Instance.Play("Mascara", transform.position);
         }
     }
 }
