@@ -17,8 +17,8 @@ public class MenuManager : MonoBehaviour
 
     IEnumerator DelayToChange()
     {
+        cutsceneStart.StartGame();
         yield return new WaitForSeconds(delay);
         menu.enabled = false;
-        cutsceneStart.StartGame();
     }
 }
