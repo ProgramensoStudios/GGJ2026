@@ -28,7 +28,7 @@ public class MaskManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        LoadMasks();
+        //LoadMasks();
     }
 
     private void Start()
@@ -43,7 +43,7 @@ public class MaskManager : MonoBehaviour
         if (!unlockedMasks.Contains(mask))
         {
             unlockedMasks.Add(mask);
-            SaveMasks();
+           // SaveMasks();
             Debug.Log($"<color=green>Mask unlocked: {mask}</color>");
         }
     }
@@ -101,7 +101,7 @@ public class MaskManager : MonoBehaviour
     public bool CanClimb() => activeMask == MaskType.Climb;
 
     // ==== Persistencia ====
-    private void SaveMasks()
+   private void SaveMasks()
     {
         PlayerPrefs.SetInt("MaskDashUnlocked", unlockedMasks.Contains(MaskType.Dash) ? 1 : 0);
         PlayerPrefs.SetInt("MaskClimbUnlocked", unlockedMasks.Contains(MaskType.Climb) ? 1 : 0);
