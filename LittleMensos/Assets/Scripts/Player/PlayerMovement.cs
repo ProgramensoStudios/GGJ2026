@@ -206,7 +206,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (currentTeleport.childCount == 0)
         {
-            Debug.LogWarning("Climbable object has no children!");
+            Debug.LogWarning("Teleport object has no children!");
             return;
         }
 

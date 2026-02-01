@@ -15,9 +15,9 @@ public class PostProcessChange : MonoBehaviour
     public float fadeDuration = 0.5f;
 
     [Header("LiftGammaGain Settings")]
-    public Color noneMaskLift = Color.white;
-    public Color dashMaskLift = Color.red;
-    public Color climbMaskLift = Color.blue;
+    public Color noneMask = Color.white;
+    public Color dashMask = Color.red;
+    public Color climbMask = Color.blue;
 
     [Range(-1f, 1f)]
     public float liftIntensity = 0.2f;
@@ -44,7 +44,7 @@ public class PostProcessChange : MonoBehaviour
 
         if (volume.profile.TryGet(out liftGammaGain))
         {
-            liftGammaGain.active = false;
+            liftGammaGain.active = true;
         }
         else
         {
@@ -73,22 +73,22 @@ public class PostProcessChange : MonoBehaviour
         {
             case MaskType.None:
                 targetVignette = vignetteOnIntensity;
-                targetLiftColor = noneMaskLift;
+                targetLiftColor = noneMask;
                 break;
 
             case MaskType.Dash:
                 targetVignette = vignetteOffIntensity;
-                targetLiftColor = dashMaskLift;
+                targetLiftColor = dashMask;
                 break;
 
             case MaskType.Climb:
                 targetVignette = vignetteOffIntensity;
-                targetLiftColor = climbMaskLift;
+                targetLiftColor = climbMask;
                 break;
 
             default:
                 targetVignette = vignetteOnIntensity;
-                targetLiftColor = noneMaskLift;
+                targetLiftColor = noneMask;
                 break;
         }
 
