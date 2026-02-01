@@ -10,6 +10,8 @@ public class TriggerCutscene : MonoBehaviour
     private bool hasPlayed = false;
     [SerializeField] private PlayerMovement player;
 
+    [SerializeField] private DinamicAudio dynamicAudio;
+
     public Action startGame;
 
     private void OnTriggerEnter(Collider other)
@@ -27,5 +29,6 @@ public class TriggerCutscene : MonoBehaviour
         cutscene.gameObject.SetActive(false);
         player.canMove = true;
         startGame?.Invoke();
+        //dynamicAudio.AddLayerSound(3);
     }
 }

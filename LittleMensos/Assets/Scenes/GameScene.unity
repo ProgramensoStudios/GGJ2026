@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 21366906}
   - component: {fileID: 21366907}
   m_Layer: 0
-  m_Name: AudioPers2
+  m_Name: BoleritoCinem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7094,6 +7094,7 @@ MonoBehaviour:
   sequencer: {fileID: 1378133161}
   secondsLoLast: 30
   player: {fileID: 728792136}
+  dynamicAudio: {fileID: 1646285715}
 --- !u!114 &620998509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7109,6 +7110,7 @@ MonoBehaviour:
   cutscene: {fileID: 1765866419}
   timeToEnd: 6
   player: {fileID: 728792136}
+  dynamicAudio: {fileID: 1646285715}
 --- !u!65 &620998510
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12459,7 +12461,7 @@ Transform:
   m_GameObject: {fileID: 728792133}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 100.5, y: 5.87, z: -11.54}
+  m_LocalPosition: {x: -66.1, y: 5.87, z: -11.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14232,7 +14234,7 @@ GameObject:
   - component: {fileID: 1366988771}
   - component: {fileID: 1366988772}
   m_Layer: 0
-  m_Name: Audioperson
+  m_Name: RancheritaTuto
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14264,7 +14266,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 672c037a69b2efe4eb9fedf04429e704, type: 3}
+  m_Resource: {fileID: 8300000, guid: 7cfb03ec4e3e252499f92a572bd4e2b7, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -16684,7 +16686,7 @@ Transform:
   m_GameObject: {fileID: 1962582823}
   serializedVersion: 2
   m_LocalRotation: {x: 0.034737732, y: 0.000000016944881, z: -5.889822e-10, w: 0.9993965}
-  m_LocalPosition: {x: 100.5, y: 6.5660143, z: -21.54}
+  m_LocalPosition: {x: -66.100006, y: 6.5660143, z: -21.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -16833,7 +16835,7 @@ GameObject:
   - component: {fileID: 1964172902}
   - component: {fileID: 1964172903}
   m_Layer: 0
-  m_Name: AudioPers1
+  m_Name: BoleritoMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21893,7 +21895,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2124623520
 Transform:
   m_ObjectHideFlags: 0
