@@ -6,7 +6,7 @@ using UnityEngine.Rendering.Universal;
 public class PostProcessChange : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private PlayerMovement player;
+    [SerializeField] private MaskManager maskManager;
     public Volume volume;
 
     [Header("Vignette Settings")]
@@ -14,9 +14,18 @@ public class PostProcessChange : MonoBehaviour
     public float vignetteOffIntensity = 0.2f;
     public float fadeDuration = 0.5f;
 
+    [Header("LiftGammaGain Settings")]
+    public Color noneMaskLift = Color.white;
+    public Color dashMaskLift = Color.red;
+    public Color climbMaskLift = Color.blue;
+
+    [Range(-1f, 1f)]
+    public float liftIntensity = 0.2f;
+
     public bool firstTime = true;
 
     private Vignette vignette;
+    private LiftGammaGain liftGammaGain;
     private Coroutine fadeRoutine;
 
     void Awake()
@@ -24,33 +33,71 @@ public class PostProcessChange : MonoBehaviour
         if (volume.profile.TryGet(out vignette))
         {
             vignette.active = true;
-            if (firstTime) return;
-            vignette.intensity.value = vignetteOnIntensity;
+
+            if (!firstTime)
+                vignette.intensity.value = vignetteOnIntensity;
         }
         else
         {
             Debug.LogError("Vignette override not found in Volume");
         }
+
+        if (volume.profile.TryGet(out liftGammaGain))
+        {
+            liftGammaGain.active = true;
+        }
+        else
+        {
+            Debug.LogError("LiftGammaGain override not found in Volume");
+        }
     }
 
     void OnEnable()
     {
-        //player.OnMaskStateChanged += HandleMaskChanged;
+        if (maskManager != null)
+            maskManager.OnMaskChanged += HandleMaskChanged;
     }
 
     void OnDisable()
     {
-        //player.OnMaskStateChanged -= HandleMaskChanged;
+        if (maskManager != null)
+            maskManager.OnMaskChanged -= HandleMaskChanged;
     }
 
-    void HandleMaskChanged(bool maskOn)
+    void HandleMaskChanged(MaskType mask)
     {
-        float target = maskOn ? vignetteOffIntensity : vignetteOnIntensity;
+        float targetVignette;
+        Color targetLiftColor;
+
+        switch (mask)
+        {
+            case MaskType.None:
+                targetVignette = vignetteOnIntensity;
+                targetLiftColor = noneMaskLift;
+                break;
+
+            case MaskType.Dash:
+                targetVignette = vignetteOffIntensity;
+                targetLiftColor = dashMaskLift;
+                break;
+
+            case MaskType.Climb:
+                targetVignette = vignetteOffIntensity;
+                targetLiftColor = climbMaskLift;
+                break;
+
+            default:
+                targetVignette = vignetteOnIntensity;
+                targetLiftColor = noneMaskLift;
+                break;
+        }
 
         if (fadeRoutine != null)
             StopCoroutine(fadeRoutine);
 
-        fadeRoutine = StartCoroutine(FadeVignette(target));
+        fadeRoutine = StartCoroutine(FadeVignette(targetVignette));
+
+        ApplyLift(targetLiftColor);
     }
 
     IEnumerator FadeVignette(float target)
@@ -67,5 +114,17 @@ public class PostProcessChange : MonoBehaviour
         }
 
         vignette.intensity.value = target;
+    }
+
+    void ApplyLift(Color color)
+    {
+        Vector4 liftValue = new Vector4(
+            color.r * liftIntensity,
+            color.g * liftIntensity,
+            color.b * liftIntensity,
+            0f
+        );
+
+        liftGammaGain.lift.Override(liftValue);
     }
 }

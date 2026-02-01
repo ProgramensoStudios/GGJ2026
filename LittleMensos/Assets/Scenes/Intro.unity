@@ -1669,7 +1669,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1032315275
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4133,7 +4133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3df8430a4b766b43a8263a601633c71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PostProcessChange
-  player: {fileID: 721465033}
+  maskManager: {fileID: 721465036}
   volume: {fileID: 1962582829}
   vignetteOnIntensity: 0.4
   vignetteOffIntensity: 0.2
@@ -4586,7 +4586,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2095266012
 Transform:
   m_ObjectHideFlags: 0
