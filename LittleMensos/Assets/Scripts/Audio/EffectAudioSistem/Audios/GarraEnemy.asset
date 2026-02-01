@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0da49f94224d8b409bb4116a0220f91, type: 3}
-  m_Name: Coida
+  m_Name: GarraEnemy
   m_EditorClassIdentifier: Assembly-CSharp::SFXData
-  id: Caida
-  clip: {fileID: 8300000, guid: 3387199603f5f934a9f995aa9b435060, type: 3}
+  id: GarraEnemy
+  clip: {fileID: 8300000, guid: 80c5ef369dae3af41a18dcf89666ccba, type: 3}
   volume: 1
   pitch: 1
   loop: 0

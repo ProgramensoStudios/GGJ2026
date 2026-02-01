@@ -29,4 +29,9 @@ public class GarraPatrol : MonoBehaviour,IPatrolBehaviour
         else if (xDir < -0.05f)
             sprite.flipX = true;
     }
+
+    private void OnBecameVisible()
+    {
+        SFXManager.Instance.Play("GarraEnemy", transform.position);
+    }
 }
