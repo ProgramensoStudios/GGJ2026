@@ -44,6 +44,8 @@ public class TriggerCutscene : MonoBehaviour
     public IEnumerator SetOff()
     {
         yield return new WaitForSeconds(timeToEnd);
+        SFXManager.Instance.Play("Corazon", transform.position);
+        SFXManager.Instance.Play("GenteSufriendo", transform.position);
 
         cutscene.gameObject.SetActive(false);
         player.canMove = true;

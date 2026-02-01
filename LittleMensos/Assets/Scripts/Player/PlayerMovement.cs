@@ -287,6 +287,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         Debug.Log("DALE");
+        SFXManager.Instance.Play("Teleporter", transform.position);
         Transform targetPoint = currentTeleport.GetChild(0);
         StartCoroutine(MoveToPosition(targetPoint.position, teleportDuration));
     }
@@ -294,6 +295,7 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator Dash()
     {
+        SFXManager.Instance.Play("Dash", transform.position);
         isDashing = true;
         animator.SetTrigger(dashHash);
 
