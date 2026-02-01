@@ -16,6 +16,8 @@ public class MaskManager : MonoBehaviour
     public MaskType activeMask = MaskType.None;
     private HashSet<MaskType> unlockedMasks = new HashSet<MaskType>();
 
+    [SerializeField] private DinamicAudio dynamicAudio;
+
     public Action<MaskType> OnMaskChanged;
 
     private void Awake()
@@ -31,10 +33,6 @@ public class MaskManager : MonoBehaviour
         //LoadMasks();
     }
 
-    private void Start()
-    {
-        UpdateMaskVisuals();
-    }
 
     // Desbloquear máscara nueva
     public void UnlockMask(MaskType mask)
@@ -84,15 +82,28 @@ public class MaskManager : MonoBehaviour
         {
             case MaskType.Dash:
                 dashMask.SetActive(true);
+                dynamicAudio.AddLayerSound(3);
+                dynamicAudio.LessLayerSound(0);
+                dynamicAudio.LessLayerSound(1);
+                dynamicAudio.LessLayerSound(2);
+                dynamicAudio.LessLayerSound(4);
                 break;
 
             case MaskType.Climb:
                 climbMask.SetActive(true);
+                dynamicAudio.AddLayerSound(3);
+                dynamicAudio.LessLayerSound(0);
+                dynamicAudio.LessLayerSound(1);
+                dynamicAudio.LessLayerSound(2);
+                dynamicAudio.LessLayerSound(4);
                 break;
 
             case MaskType.None:
-            default:
-                // no se prende nada
+                dynamicAudio.AddLayerSound(4);
+                dynamicAudio.LessLayerSound(0);
+                dynamicAudio.LessLayerSound(1);
+                dynamicAudio.LessLayerSound(2);
+                dynamicAudio.LessLayerSound(3);
                 break;
         }
         OnMaskChanged?.Invoke(activeMask);
